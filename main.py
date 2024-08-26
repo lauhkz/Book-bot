@@ -1,7 +1,7 @@
 def main():
     path = "books/frankenstein.txt"
     text = read_book(path)
-    print(text)
+    # print(text)
     total = count_words(text)
 
     # Here is the fuzzy and noisy stuff
@@ -16,7 +16,7 @@ def main():
 def report(chars, total_words, path):
     print(f"--- Begin report of {path} ---")
     print(f"{total_words} words found in the document")
-
+    print("")
     for key in chars:
         print(f"The '{key[0]}' character was found {key[1]} times")
     print("--- End report ---")
@@ -31,7 +31,7 @@ def read_book(path):
 # Returns the total of "words" in the text
 def count_words(text):
     words = text.split()
-    print(f"There is a total of {len(words)} words in this book")
+    return len(words)
 
 
 def get_alpha(lst):
