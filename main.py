@@ -1,105 +1,65 @@
 def main():
-    text = read_book()
-    #print(text)
-    count_words(text)
-    dict_of_chars = count_characters(text)
-    print(dict_of_chars)
+    path = "books/frankenstein.txt"
+    text = read_book(path)
+    print(text)
+    total = count_words(text)
 
-def read_book():
-    with open("books/frankenstein.txt") as f:
+    # Here is the fuzzy and noisy stuff
+    all_chars = count_characters(text)
+
+    only_alpha = get_alpha(all_chars)
+
+    report(only_alpha, total, path)
+
+
+# TODO
+def report(chars, total_words, path):
+    print(f"--- Begin report of {path} ---")
+    print(f"{total_words} words found in the document")
+
+    for key in chars:
+        print(f"The '{key[0]}' character was found {key[1]} times")
+    print("--- End report ---")
+
+
+# Returns the all text
+def read_book(path):
+    with open(path) as f:
         return f.read()
 
-def count_words(text):
-    counter = 0
-    words = text.split()
-    for word in words:
-        counter += 1
-    print(f"There is a total of {counter} words in this book")
 
+# Returns the total of "words" in the text
+def count_words(text):
+    words = text.split()
+    print(f"There is a total of {len(words)} words in this book")
+
+
+def get_alpha(lst):
+    sorted_list = lst
+    alpha_list = {}
+    for key in sorted_list[0]:
+        if key.isalpha():
+            alpha_list[key] = sorted_list[0].get(key)
+
+    alpha_list = list(alpha_list.items())
+    items = sorted(alpha_list, reverse=True, key=lambda char: char[1])
+
+    return items
+
+
+# Returns a list with the count of each character in the text
 def count_characters(text):
     text_to_lowercase = text.lower()
-    characters = {
-        "a":0,
-        "b":0,
-        "c":0,
-        "d":0,
-        "e":0,
-        "f":0,
-        "g":0,
-        "h":0,
-        "i":0,
-        "j":0,
-        "k":0,
-        "l":0,
-        "m":0,
-        "n":0,
-        "o":0,
-        "p":0,
-        "q":0,
-        "r":0,
-        "s":0,
-        "t":0,
-        "u":0,
-        "v":0,
-        "w":0,
-        "x":0,
-        "y":0,
-        "z":0,
-    }
+    characters = {}
+    characters_list = []
+
     for word in text_to_lowercase:
-        if word == "a":
-            characters['a'] += 1
-        elif word == "b":
-            characters['b'] += 1
-        elif word == "c":
-            characters['c'] += 1
-        elif word == "d":
-            characters['d'] += 1
-        elif word == "e":
-            characters['e'] += 1
-        elif word == "f":
-            characters['f'] += 1
-        elif word == "g":
-            characters['g'] += 1
-        elif word == "h":
-            characters['h'] += 1
-        elif word == "i":
-            characters['i'] += 1
-        elif word == "j":
-            characters['j'] += 1
-        elif word == "k":
-            characters['k'] += 1
-        elif word == "l":
-            characters['l'] += 1
-        elif word == "m":
-            characters['m'] += 1
-        elif word == "n":
-            characters['n'] += 1
-        elif word == "o":
-            characters['o'] += 1
-        elif word == "p":
-            characters['p'] += 1
-        elif word == "q":
-            characters['q'] += 1
-        elif word == "r":
-            characters['r'] += 1
-        elif word == "s":
-            characters['s'] += 1
-        elif word == "t":
-            characters['t'] += 1
-        elif word == "u":
-            characters['u'] += 1
-        elif word == "v":
-            characters['v'] += 1
-        elif word == "w":
-            characters['w'] += 1
-        elif word == "x":
-            characters['x'] += 1
-        elif word == "y":
-            characters['y'] += 1
-        elif word == "z":
-            characters['z'] += 1
-    return characters
+        if word in characters:
+            characters[word] += 1
+        else:
+            characters[word] = 1
+    characters_list.append(characters)
+    return characters_list
 
 
 main()
